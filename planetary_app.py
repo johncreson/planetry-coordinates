@@ -448,6 +448,10 @@ def main():
         with time_col:
             selected_time_input = st.time_input("Time (UTC)", value=datetime.now().time())
         selected_time = datetime.combine(selected_date, selected_time_input).replace(tzinfo=timezone.utc)
+
+    # Initialize calculator and JD immediately to avoid scope issues
+    calc = PlanetaryCoordinates()
+    jd = calc.julian_date(selected_time)
     
     # Coordinate system selection
     coord_systems = st.sidebar.multiselect(
@@ -491,8 +495,7 @@ def main():
     
     # Calculate positions
     with st.spinner("Calculating planetary positions..."):
-        calc = PlanetaryCoordinates()
-        jd = calc.julian_date(selected_time)  # Always calculate JD for compatibility
+       
         
         if use_jpl:
             # Try JPL HORIZONS first
