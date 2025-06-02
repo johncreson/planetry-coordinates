@@ -492,6 +492,7 @@ def main():
     # Calculate positions
     with st.spinner("Calculating planetary positions..."):
         calc = PlanetaryCoordinates()
+        jd = calc.julian_date(selected_time)  # Always calculate JD for compatibility
         
         if use_jpl:
             # Try JPL HORIZONS first
@@ -535,7 +536,6 @@ def main():
                     """)
         else:
             # Use simplified calculations
-            jd = calc.julian_date(selected_time)
             positions = calc.calculate_approximate_positions(jd)
             
             # Add source information to simplified data
@@ -544,9 +544,6 @@ def main():
                 positions[planet]['precision'] = 'APPROXIMATE'
             
             st.info("📐 Using simplified astronomical calculations (educational accuracy)")
-    
-    # Initialize calculator (keep for compatibility)
-    calc = PlanetaryCoordinates()
     
     # Display results
     if selected_planets:
